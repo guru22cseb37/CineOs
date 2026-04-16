@@ -116,7 +116,7 @@ export default function OnboardingPage() {
       .flatMap(i => i.genres);
     localStorage.setItem('cineos_calibration', JSON.stringify({ likedGenres, completedAt: new Date().toISOString() }));
     setSaving(false);
-    router.push('/');
+    router.push('/discover');
   };
 
   const remaining = movies.length - currentIndex;
