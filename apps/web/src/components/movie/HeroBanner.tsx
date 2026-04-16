@@ -132,7 +132,7 @@ export default function HeroBanner({ movie }: HeroBannerProps) {
 
       {/* Content Layer with inverse parallax for depth */}
       <motion.div 
-        className="absolute bottom-0 left-0 p-8 md:p-16 w-full md:w-3/5 z-20"
+        className="absolute bottom-10 md:bottom-0 left-0 p-6 md:p-16 w-full md:w-3/5 z-20"
         style={{ x: contentX, y: contentY }}
       >
         <AnimatePresence mode="wait">
@@ -160,37 +160,37 @@ export default function HeroBanner({ movie }: HeroBannerProps) {
             </div>
 
             {/* Title with Layered Shadow */}
-            <h1 className="text-6xl md:text-8xl font-black text-white mb-6 leading-[0.9] tracking-tighter drop-shadow-[0_20px_50px_rgba(0,0,0,0.8)]">
+            <h1 className="text-4xl md:text-8xl font-black text-white mb-4 md:mb-6 leading-[0.9] tracking-tighter drop-shadow-[0_20px_50px_rgba(0,0,0,0.8)]">
               <span className="block">{movie.title || movie.name}</span>
             </h1>
 
             {/* Overview */}
-            <p className="text-white/60 text-base md:text-xl max-w-xl mb-10 leading-relaxed font-medium drop-shadow-md">
+            <p className="text-white/60 text-sm md:text-xl max-w-xl mb-6 md:mb-10 leading-relaxed font-medium drop-shadow-md line-clamp-3 md:line-clamp-none">
               {movie.overview}
             </p>
 
             {/* CTA Buttons */}
-            <div className="flex items-center gap-6 flex-wrap">
+            <div className="flex items-center gap-4 md:gap-6 flex-wrap">
               <motion.button
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={handlePlay}
-                className="flex items-center gap-3 bg-cinema-gold text-cinema-void px-10 py-4.5 rounded-2xl font-black text-lg hover:bg-white transition-all shadow-2xl shadow-cinema-gold/30 group"
+                className="flex items-center gap-2 md:gap-3 bg-cinema-gold text-cinema-void px-6 py-3.5 md:px-10 md:py-4.5 rounded-2xl font-black text-base md:text-lg hover:bg-white transition-all shadow-2xl shadow-cinema-gold/30 group"
               >
-                <div className="w-6 h-6 rounded-full bg-cinema-void flex items-center justify-center group-hover:bg-cinema-gold transition-colors">
-                  <Play className="w-3 h-3 fill-current text-cinema-gold group-hover:text-cinema-void" />
+                <div className="w-5 h-5 md:w-6 md:h-6 rounded-full bg-cinema-void flex items-center justify-center group-hover:bg-cinema-gold transition-colors">
+                  <Play className="w-2.5 h-2.5 md:w-3 md:h-3 fill-current text-cinema-gold group-hover:text-cinema-void" />
                 </div>
-                {trailerKey ? 'Experience Trailer' : 'Search YouTube'}
+                {trailerKey ? 'Experience' : 'YouTube'}
               </motion.button>
               
               <Link href={`/movie/${movie.id}`}>
                 <motion.button
                   whileHover={{ scale: 1.05, y: -2, backgroundColor: 'rgba(255,255,255,0.15)' }}
                   whileTap={{ scale: 0.98 }}
-                  className="flex items-center gap-3 bg-white/5 backdrop-blur-2xl border border-white/10 text-white px-10 py-4.5 rounded-2xl font-black text-lg transition-all"
+                  className="flex items-center gap-2 md:gap-3 bg-white/5 backdrop-blur-2xl border border-white/10 text-white px-6 py-3.5 md:px-10 md:py-4.5 rounded-2xl font-black text-base md:text-lg transition-all"
                 >
-                  <Info className="w-5 h-5" />
-                  In-Depth Details
+                  <Info className="w-4 h-4 md:w-5 md:h-5" />
+                  Details
                 </motion.button>
               </Link>
             </div>
