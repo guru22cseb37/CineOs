@@ -18,7 +18,7 @@ export default function SceneExplorer({ movieId, movieTitle }: SceneExplorerProp
   const { data: imageData } = useQuery({
     queryKey: ['movie-images', movieId],
     queryFn: async () => {
-      const res = await fetch(`http://localhost:4000/api/ai/movie-images/${movieId}`);
+      const res = await fetch(`https://cine-os-api.vercel.app/api/ai/movie-images/${movieId}`);
       if (!res.ok) throw new Error('Failed to fetch images');
       return res.json();
     }
@@ -29,7 +29,7 @@ export default function SceneExplorer({ movieId, movieTitle }: SceneExplorerProp
     setTrivia('');
     setIsTriviaLoading(true);
     try {
-      const res = await fetch('http://localhost:4000/api/ai/scene-trivia', {
+      const res = await fetch('https://cine-os-api.vercel.app/api/ai/scene-trivia', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 

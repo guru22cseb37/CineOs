@@ -12,7 +12,7 @@ export default function CineDNARadar({ movieId }: CineDNARadarProps) {
   const { data: dna, isLoading } = useQuery({
     queryKey: ['movie-dna', movieId],
     queryFn: async () => {
-      const res = await fetch(`http://localhost:4000/api/movies/${movieId}/dna`);
+      const res = await fetch(`https://cine-os-api.vercel.app/api/movies/${movieId}/dna`);
       if (!res.ok) throw new Error('DNA sequencing failed');
       return res.json();
     },

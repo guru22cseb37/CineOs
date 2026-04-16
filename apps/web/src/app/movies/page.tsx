@@ -7,7 +7,7 @@ export default function MoviesPage() {
   const { data, isLoading } = useQuery({
     queryKey: ['popularMovies'],
     queryFn: async () => {
-      const res = await fetch(`http://localhost:4000/api/movies/popular`);
+      const res = await fetch(`https://cine-os-api.vercel.app/api/movies/popular`);
       if (!res.ok) throw new Error('Failed to fetch movies');
       return res.json();
     }

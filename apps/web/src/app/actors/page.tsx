@@ -26,8 +26,8 @@ export default function Actors() {
     queryKey: ['actors', activeIndustry.id, letter],
     queryFn: async () => {
       const url = currentLang 
-        ? `http://localhost:4000/api/actors?language=${currentLang}`
-        : `http://localhost:4000/api/actors?letter=${letter.toLowerCase()}`;
+        ? `https://cine-os-api.vercel.app/api/actors?language=${currentLang}`
+        : `https://cine-os-api.vercel.app/api/actors?letter=${letter.toLowerCase()}`;
         
       const res = await fetch(url);
       if (!res.ok) throw new Error('Failed to fetch actors');

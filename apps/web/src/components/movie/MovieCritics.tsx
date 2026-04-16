@@ -14,7 +14,7 @@ export default function MovieCritics({ title, overview }: MovieCriticsProps) {
   const { data: reviews, isLoading } = useQuery({
     queryKey: ['critics', title],
     queryFn: async () => {
-      const res = await fetch('http://localhost:4000/api/ai/critics', {
+      const res = await fetch('https://cine-os-api.vercel.app/api/ai/critics', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title, overview })

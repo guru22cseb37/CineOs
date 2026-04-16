@@ -49,7 +49,7 @@ export default function WatchPartyPage() {
     setLoading(true);
     setResult(null);
     try {
-      const res = await fetch('http://localhost:4000/api/ai/watch-party', {
+      const res = await fetch('https://cine-os-api.vercel.app/api/ai/watch-party', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ profiles })

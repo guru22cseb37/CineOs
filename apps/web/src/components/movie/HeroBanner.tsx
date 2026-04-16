@@ -58,7 +58,7 @@ export default function HeroBanner({ movie }: HeroBannerProps) {
 
   useEffect(() => {
     if (movie?.id) {
-      fetch(`http://localhost:4000/api/movies/${movie.id}/videos`)
+      fetch(`https://cine-os-api.vercel.app/api/movies/${movie.id}/videos`)
         .then(res => res.json())
         .then(data => {
           const videos = data.results || [];

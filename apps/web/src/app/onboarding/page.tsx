@@ -88,12 +88,12 @@ export default function OnboardingPage() {
     queryFn: async () => {
       // Try trending first, fallback to popular
       try {
-        const res = await fetch('http://localhost:4000/api/movies/trending');
+        const res = await fetch('https://cine-os-api.vercel.app/api/movies/trending');
         const json = await res.json();
         if (json.results && json.results.length > 0) return json;
       } catch {}
       // Fallback
-      const res = await fetch('http://localhost:4000/api/movies/popular');
+      const res = await fetch('https://cine-os-api.vercel.app/api/movies/popular');
       return res.json();
     },
     retry: 3,

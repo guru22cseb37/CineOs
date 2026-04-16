@@ -9,7 +9,7 @@ import MovieRow from '@/components/movie/MovieRow';
 import ToneRadar from '@/components/search/ToneRadar';
 import { Sparkles, Users, Clapperboard, Flame, Star, Globe2, Zap } from 'lucide-react';
 
-const API = 'http://localhost:4000/api';
+import { API_BASE } from '@/lib/api';
 
 const fetchMovies = async (path: string) => {
   const res = await fetch(`${API}/movies/${path}`);

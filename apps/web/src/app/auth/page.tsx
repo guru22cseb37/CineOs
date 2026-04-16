@@ -26,7 +26,7 @@ export default function AuthPage() {
         ? { email: form.email, password: form.password }
         : { email: form.email, password: form.password, name: form.name };
 
-      const res = await fetch(`http://localhost:4000${endpoint}`, {
+      const res = await fetch(`https://cine-os-api.vercel.app${endpoint}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)

@@ -21,7 +21,7 @@ export default function MovieCard({ movie }: MovieCardProps) {
   const fetchTrailer = useCallback(async () => {
     if (trailerKey !== null) return;
     try {
-      const res = await fetch(`http://localhost:4000/api/movies/${movie.id}/videos`);
+      const res = await fetch(`https://cine-os-api.vercel.app/api/movies/${movie.id}/videos`);
       const data = await res.json();
       const videos = data.results || [];
       

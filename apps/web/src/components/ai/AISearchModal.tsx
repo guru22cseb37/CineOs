@@ -47,7 +47,7 @@ export default function AISearchModal() {
     setAiParams(null);
 
     try {
-      const res = await fetch('http://localhost:4000/api/ai/search', {
+      const res = await fetch('https://cine-os-api.vercel.app/api/ai/search', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query })

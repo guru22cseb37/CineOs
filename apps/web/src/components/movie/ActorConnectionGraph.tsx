@@ -20,7 +20,7 @@ export default function ActorConnectionGraph({ actorId, actorName }: ActorConnec
   const { data: connections, isLoading } = useQuery<Connection[]>({
     queryKey: ['actor-connections', actorId],
     queryFn: async () => {
-      const res = await fetch(`http://localhost:4000/api/actors/${actorId}/connections`);
+      const res = await fetch(`https://cine-os-api.vercel.app/api/actors/${actorId}/connections`);
       if (!res.ok) throw new Error('Connection logic failed');
       return res.json();
     }
