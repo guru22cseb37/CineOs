@@ -4,7 +4,9 @@ import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import HeroBanner from '@/components/movie/HeroBanner';
+
 import MovieRow from '@/components/movie/MovieRow';
+import ToneRadar from '@/components/search/ToneRadar';
 import { Sparkles, Users, Clapperboard, Flame, Star, Globe2, Zap } from 'lucide-react';
 
 const API = 'http://localhost:4000/api';
@@ -55,8 +57,13 @@ export default function Home() {
     <div className="pb-20">
       <HeroBanner movie={heroMovie} />
 
+      {/* Tone Radar Search */}
+      <section className="container mx-auto px-4 md:px-12 -mt-10 mb-16 relative z-30">
+        <ToneRadar />
+      </section>
+
       {/* AI Features Showcase */}
-      <section className="relative z-20 container mx-auto px-4 md:px-12 mt-[-40px] mb-16">
+      <section className="relative z-20 container mx-auto px-4 md:px-12 mb-16">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}

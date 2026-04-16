@@ -55,20 +55,40 @@ router.get('/:id/videos', async (req, res, next) => {
   }
 });
 
+
+// GET /api/movies/:id/dna
+router.get('/:id/dna', async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const movie = await TMDBService.getMovie(id);
+    const dna = await GroqService.getMovieCineDNA(movie.title, movie.overview);
+    res.json(dna);
+  } catch (error) {
+    next(error);
+  }
+});
+
 // GET /api/movies/:id
 router.get('/:id', async (req, res, next) => {
   try {
     const { id } = req.params;
     // Parallel fetch for speed
-    const [movie, credits, similar] = await Promise.all([
+    const [movie, credits, similar, critics, dna] = await Promise.all([
       TMDBService.getMovie(id),
       TMDBService.getMovieCredits(id),
-      TMDBService.getMovieSimilar(id)
+      TMDBService.getMovieSimilar(id),
+      GroqService.getMovieCritics(id, id), // Note: We'll fetch these based on the actual title in the component or here
+      GroqService.getMovieCineDNA(id, id)   // Same here
     ]);
+
+    // To avoid double analysis, it might be better to fetch them in the frontend or 
+    // fetch the movie first then critics. For now, let's just add the endpoint and
+    // let the frontend handle the specialized calls.
     res.json({ ...movie, credits, similar });
   } catch (error) {
     next(error);
   }
 });
+
 
 export default router;

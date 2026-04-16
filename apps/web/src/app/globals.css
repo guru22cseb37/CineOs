@@ -2,25 +2,49 @@
 @tailwind components;
 @tailwind utilities;
 
+
 :root {
-  --cineos-primary: #d4af37;
-  --cineos-glow: #d4af3740;
-  --cineos-bg: #080808;
+  --cinema-primary: #8DE021;
+  --cinema-gold: #FFD700;
+  --cinema-void: #020205;
+  --cinema-obsidian: #0A0A0F;
+  --cinema-glass: rgba(255, 255, 255, 0.03);
+  --focus-dim: 1;
 }
 
 @layer base {
   body {
-    @apply bg-cinema-void text-white antialiased selection:bg-cinema-gold selection:text-cinema-void overflow-x-hidden;
-    background-color: var(--cineos-bg);
-    transition: background-color 1.5s ease;
+    @apply text-white antialiased selection:bg-cinema-gold selection:text-cinema-void overflow-x-hidden min-h-screen transition-all duration-1000;
+    font-feature-settings: "ss01", "ss02", "cv01", "cv02";
+    background: 
+      radial-gradient(circle at 50% 0%, rgba(141, 224, 33, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 100% 100%, rgba(255, 215, 0, 0.03) 0%, transparent 40%),
+      #020205;
   }
 }
 
 @layer utilities {
   .glassmorphism {
-    @apply bg-cinema-glass backdrop-blur-md border border-white/10;
+    @apply bg-cinema-glass backdrop-blur-2xl border border-white/5;
   }
   
+  .dark-room-focus:hover ~ * {
+    opacity: 0.3;
+    filter: blur(4px);
+    transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  /* Focus dimming overlay */
+  .focus-dimmed {
+    filter: brightness(0.3) blur(2px);
+    pointer-events: none;
+    transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+
   .hide-scrollbar::-webkit-scrollbar {
     display: none;
   }
@@ -28,4 +52,9 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+
+  .text-glow {
+    text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+  }
 }
+

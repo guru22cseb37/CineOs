@@ -86,4 +86,89 @@ export class GroqService {
 
     return completion.choices[0]?.message?.content || '{}';
   }
+
+
+  static async getMovieCritics(title: string, overview: string): Promise<{ scholar: string; hype: string; technical: string }> {
+    if (!process.env.GROQ_API_KEY) return { scholar: '', hype: '', technical: '' };
+
+    const completion = await groq.chat.completions.create({
+      messages: [
+        {
+          role: 'system',
+          content: 'You are three elite movie critics. Return a JSON object with three keys: "scholar" (deep, analytical, focused on cinematography and subtext), "hype" (enthusiastic, focused on fun, action, and modern vibes), and "technical" (a seasoned Director of Photography focusing on lenses, lighting, framing, and technical mastery). Each review should be 2-3 sentences. Return ONLY valid JSON.'
+        },
+        { role: 'user', content: `Movie: "${title}". Overview: ${overview}` }
+      ],
+      model: 'llama-3.3-70b-versatile',
+      temperature: 0.7,
+      max_tokens: 768,
+      response_format: { type: 'json_object' }
+    });
+
+    const content = completion.choices[0]?.message?.content || '{}';
+    return JSON.parse(content);
+  }
+
+  static async getMovieCineDNA(title: string, overview: string): Promise<{ labels: string[]; values: number[] }> {
+    if (!process.env.GROQ_API_KEY) return { labels: [], values: [] };
+
+    const completion = await groq.chat.completions.create({
+      messages: [
+        {
+          role: 'system',
+          content: 'Analyze the "DNA" of a movie. Return a JSON object with two arrays: "labels" (Cinematography, Storyweight, Adrenaline, Heart, Complexity) and "values" (integers 0-100 representing the Intensity). Be accurate to the film style. Return ONLY valid JSON.'
+        },
+        { role: 'user', content: `Analyze the DNA of: "${title}". Description: ${overview}` }
+      ],
+      model: 'llama-3.3-70b-versatile',
+      temperature: 0.1,
+      max_tokens: 256,
+      response_format: { type: 'json_object' }
+    });
+
+    const content = completion.choices[0]?.message?.content || '{}';
+    return JSON.parse(content);
+  }
+
+
+  static async getSceneTrivia(movieTitle: string, sceneDescription: string): Promise<string> {
+    if (!process.env.GROQ_API_KEY) return '';
+
+    const completion = await groq.chat.completions.create({
+      messages: [
+        {
+          role: 'system',
+          content: 'You are a film historian. Provide a single, fascinating "cinephile trivia" fact about a specific scene or aspect of the movie. Keep it under 40 words.'
+        },
+        { role: 'user', content: `Movie: "${movieTitle}". Scene/Aspect: ${sceneDescription}` }
+      ],
+      model: 'llama-3.3-70b-versatile',
+      temperature: 0.8,
+      max_tokens: 100
+    });
+
+    return completion.choices[0]?.message?.content?.trim() || '';
+  }
+
+  static async translateVibeToParams(vibe: string): Promise<Record<string, string>> {
+    if (!process.env.GROQ_API_KEY) return {};
+
+    const completion = await groq.chat.completions.create({
+      messages: [
+        {
+          role: 'system',
+          content: 'You are a movie expert. Translate an abstract "vibe" (e.g., "Gritty Neon Noir") into TMDB discover API parameters. Return JSON only.'
+        },
+        { role: 'user', content: `Vibe: ${vibe}` }
+      ],
+      model: 'llama-3.3-70b-versatile',
+      temperature: 0.2,
+      max_tokens: 256,
+      response_format: { type: 'json_object' }
+    });
+
+    const content = completion.choices[0]?.message?.content || '{}';
+    return JSON.parse(content);
+  }
 }
+

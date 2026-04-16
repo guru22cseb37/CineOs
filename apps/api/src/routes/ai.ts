@@ -89,4 +89,59 @@ router.post('/watch-party', async (req, res, next) => {
   }
 });
 
+
+// POST /api/ai/critics
+router.post('/critics', async (req, res, next) => {
+  try {
+    const { title, overview } = req.body;
+    if (!title || !overview) return res.status(400).json({ error: 'title and overview are required' });
+
+    const { GroqService } = await import('../services/groq.service');
+    const reviews = await GroqService.getMovieCritics(title, overview);
+    res.json(reviews);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// POST /api/ai/vibe-search
+router.post('/vibe-search', async (req, res, next) => {
+  try {
+    const { vibe } = req.body;
+    if (!vibe) return res.status(400).json({ error: 'vibe is required' });
+
+    const { GroqService } = await import('../services/groq.service');
+    const params = await GroqService.translateVibeToParams(vibe);
+    const movies = await TMDBService.discoverMovies(params);
+    res.json({ vibe, params, results: movies.results });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// POST /api/ai/scene-trivia
+router.post('/scene-trivia', async (req, res, next) => {
+  try {
+    const { movieTitle, sceneDescription } = req.body;
+    if (!movieTitle || !sceneDescription) return res.status(400).json({ error: 'movieTitle and sceneDescription are required' });
+
+    const { GroqService } = await import('../services/groq.service');
+    const trivia = await GroqService.getSceneTrivia(movieTitle, sceneDescription);
+    res.json({ trivia });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// GET /api/ai/movie-images/:id
+router.get('/movie-images/:id', async (req, res, next) => {
+  try {
+    const images = await TMDBService.getMovieImages(req.params.id);
+    res.json(images);
+  } catch (error) {
+    next(error);
+  }
+});
+
 export default router;
+
