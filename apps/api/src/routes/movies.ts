@@ -47,6 +47,26 @@ router.get('/:id/videos', async (req: Request, res: Response, next: NextFunction
 
 
 // GET /api/movies/:id/dna
+// Accepts optional body { title, overview } to speed up and reduce TMDB calls
+router.post('/:id/dna', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { id } = req.params;
+    let { title, overview } = req.body;
+
+    if (!title || !overview) {
+      const movie = await TMDBService.getMovie(id);
+      title = movie.title;
+      overview = movie.overview;
+    }
+
+    const dna = await GroqService.getMovieCineDNA(title, overview);
+    res.json(dna);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// Legacy GET support
 router.get('/:id/dna', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;

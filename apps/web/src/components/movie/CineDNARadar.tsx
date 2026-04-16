@@ -6,13 +6,19 @@ import { Activity } from 'lucide-react';
 
 interface CineDNARadarProps {
   movieId: string;
+  title?: string;
+  overview?: string;
 }
 
-export default function CineDNARadar({ movieId }: CineDNARadarProps) {
+export default function CineDNARadar({ movieId, title, overview }: CineDNARadarProps) {
   const { data: dna, isLoading } = useQuery({
     queryKey: ['movie-dna', movieId],
     queryFn: async () => {
-      const res = await fetch(`https://cine-os-api.vercel.app/api/movies/${movieId}/dna`);
+      const res = await fetch(`https://cine-os-api.vercel.app/api/movies/${movieId}/dna`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title, overview })
+      });
       if (!res.ok) throw new Error('DNA sequencing failed');
       return res.json();
     },

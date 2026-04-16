@@ -145,7 +145,7 @@ export default function MovieDetail({ params }: { params: { id: string } }) {
             <MovieCritics title={movie.title} overview={movie.overview} />
           </div>
           <div className="lg:mt-12">
-            <CineDNARadar movieId={movie.id} />
+            <CineDNARadar movieId={movie.id} title={movie.title} overview={movie.overview} />
           </div>
         </div>
 
