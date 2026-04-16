@@ -152,25 +152,52 @@ export class GroqService {
     };
   }
 
+  static async getSceneTrivia(movieTitle: string, sceneDescription: string): Promise<string> {
+    if (!process.env.GROQ_API_KEY) return "The technical mastery in this scene is a testament to the director's unique vision.";
+
+    try {
+      const completion = await groq.chat.completions.create({
+        messages: [
+          {
+            role: 'system',
+            content: 'You are a film historian. Provide a single, fascinating "cinephile trivia" fact about this scene. Under 30 words.'
+          },
+          { role: 'user', content: `Movie: "${movieTitle}". Scene: ${sceneDescription}` }
+        ],
+        model: 'llama3-8b-8192',
+        temperature: 0.8,
+        max_tokens: 100
+      });
+
+      return completion.choices[0]?.message?.content?.trim() || "";
+    } catch (e) {
+      return "This scene is widely regarded by critics as a masterclass in atmospheric tension and visual storytelling.";
+    }
+  }
+
   static async translateVibeToParams(vibe: string): Promise<Record<string, string>> {
-    if (!process.env.GROQ_API_KEY) return {};
+    if (!process.env.GROQ_API_KEY) return { sort_by: 'popularity.desc' };
 
-    const completion = await groq.chat.completions.create({
-      messages: [
-        {
-          role: 'system',
-          content: 'You are a movie expert. Translate an abstract "vibe" (e.g., "Gritty Neon Noir") into TMDB discover API parameters. Return JSON only.'
-        },
-        { role: 'user', content: `Vibe: ${vibe}` }
-      ],
-      model: 'llama-3.3-70b-versatile',
-      temperature: 0.2,
-      max_tokens: 256,
-      response_format: { type: 'json_object' }
-    });
+    try {
+      const completion = await groq.chat.completions.create({
+        messages: [
+          {
+            role: 'system',
+            content: 'Translate a movie vibe into TMDB discover API parameters (with_genres, etc). Return ONLY JSON.'
+          },
+          { role: 'user', content: `Vibe: ${vibe}` }
+        ],
+        model: 'llama3-8b-8192',
+        temperature: 0.2,
+        max_tokens: 256,
+        response_format: { type: 'json_object' }
+      });
 
-    const content = completion.choices[0]?.message?.content || '{}';
-    return JSON.parse(content);
+      const content = completion.choices[0]?.message?.content || '{}';
+      return JSON.parse(content);
+    } catch (e) {
+      return { sort_by: 'popularity.desc' };
+    }
   }
 }
 
