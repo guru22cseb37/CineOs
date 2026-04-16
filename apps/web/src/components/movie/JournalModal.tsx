@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Sparkles, Send, CheckCircle2 } from 'lucide-react';
 import { API_BASE } from '@/lib/api';
@@ -28,7 +29,7 @@ export default function JournalModal({ isOpen, onClose, onSubmit, movieTitle }: 
       const data = await res.json();
       if (data.entry) setEntry(data.entry);
     } catch (error) {
-      console.error('Failed to generate entry');
+      console.error('Failed to generate entry', error);
     } finally {
       setIsGenerating(false);
     }

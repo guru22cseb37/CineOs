@@ -1,3 +1,5 @@
+import { useQuery } from '@tanstack/react-query';
+import { motion } from 'framer-motion';
 import { BookOpen, Calendar, Star, Ghost } from 'lucide-react';
 import Link from 'next/link';
 import { API_BASE } from '@/lib/api';

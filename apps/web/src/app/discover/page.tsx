@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, ArrowLeft, Loader2, Star, Zap, RefreshCw } from 'lucide-react';
+import { Sparkles, Loader2, Star, Zap, RefreshCw } from 'lucide-react';
 import Link from 'next/link';
 import { API_BASE } from '@/lib/api';
 
@@ -28,7 +28,7 @@ export default function DiscoverPage() {
 
   const topGenres = calibData?.likedGenres ? Array.from(new Set(calibData.likedGenres)).slice(0, 3).join(',') : '';
 
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['personalized-discovery', topGenres],
     queryFn: async () => {
       if (!topGenres) return { results: [] };

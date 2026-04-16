@@ -59,7 +59,7 @@ export default function SceneExplorer({ movieId, movieTitle }: SceneExplorerProp
       </div>
 
       <div className="flex gap-4 overflow-x-auto pb-4 hide-scrollbar snap-x">
-        {images.map((img: any, i: number) => (
+        {images.map((img: any) => (
           <motion.div
             key={img.file_path}
             whileHover={{ scale: 1.05 }}

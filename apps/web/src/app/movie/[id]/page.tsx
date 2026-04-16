@@ -2,7 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-import { Play, Plus } from 'lucide-react';
+import { Play, Plus, BookOpen, Calendar, Star, Ghost } from 'lucide-react';
 
 
 import MovieRow from '@/components/movie/MovieRow';
@@ -10,6 +10,7 @@ import DynamicAtmosphere from '@/components/theme/DynamicAtmosphere';
 
 import MovieCritics from '@/components/movie/MovieCritics';
 import DirectorVision from '@/components/movie/DirectorVision';
+import CineDNARadar from '@/components/movie/CineDNARadar';
 import SceneExplorer from '@/components/movie/SceneExplorer';
 import TrailerModal from '@/components/movie/TrailerModal';
 import JournalModal from '@/components/movie/JournalModal';
@@ -91,7 +92,7 @@ export default function MovieDetail({ params }: { params: { id: string } }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ movieId: movie.id, rating: 8 }) // Default rating
       });
-    } catch (e) {
+    } catch {
       console.warn('History sync failed');
     }
   };
@@ -108,7 +109,7 @@ export default function MovieDetail({ params }: { params: { id: string } }) {
           vibe 
         })
       });
-    } catch (e) {
+    } catch {
       console.error('Journal sync failed');
     }
   };

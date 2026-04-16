@@ -15,12 +15,10 @@ const VIBES = [
 
 export default function ToneRadar() {
   const [selected, setSelected] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const handleVibeSearch = async (vibeId: string) => {
     setSelected(vibeId);
-    setIsLoading(true);
     
     // In a real app, we'd call the /vibe-search endpoint and redirect to a results page
     // For this demo, we'll simulate the search and redirect to a special search query

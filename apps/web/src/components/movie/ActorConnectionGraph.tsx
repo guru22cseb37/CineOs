@@ -34,7 +34,6 @@ export default function ActorConnectionGraph({ actorId, actorName }: ActorConnec
     );
   }
 
-  const centerSize = 100;
   const orbitRadius = 160;
 
   return (

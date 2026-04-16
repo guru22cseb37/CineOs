@@ -33,7 +33,7 @@ export default function MoodToScene({ movieTitle }: MoodToSceneProps) {
       });
       const data = await res.json();
       setScenes(data.scenes || []);
-    } catch (error) {
+    } catch {
       console.error('Mood-to-Scene failed');
     } finally {
       setIsLoading(false);
