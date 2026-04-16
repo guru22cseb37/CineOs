@@ -154,7 +154,7 @@ export default function HeroBanner({ movie }: HeroBannerProps) {
               {year && (
                 <span className="text-white/60 text-[10px] font-black tracking-widest uppercase border border-white/20 px-3 py-1 rounded-full backdrop-blur-md bg-white/5">{year}</span>
               )}
-              {genres.map(g => (
+              {genres.map((g: string) => (
                 <span key={g} className="text-white/60 text-[10px] font-black tracking-widest uppercase border border-white/10 px-3 py-1 rounded-full backdrop-blur-md bg-white/5">{g}</span>
               ))}
             </div>

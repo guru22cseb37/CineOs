@@ -2,7 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-import { Instagram, Twitter, Globe, Star, Calendar, Film } from 'lucide-react';
+import { Star, Film } from 'lucide-react';
 import Link from 'next/link';
 import ActorConnectionGraph from '@/components/movie/ActorConnectionGraph';
 

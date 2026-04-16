@@ -170,6 +170,7 @@ export class TMDBService {
       total_pages: 1,
       total_results: results.length
     };
+  }
 
   static async getActorConnections(id: string) {
     const movies = await this.getActorMovies(id);

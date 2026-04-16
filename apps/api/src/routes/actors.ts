@@ -1,13 +1,10 @@
-import { Router } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 import { TMDBService } from '../services/tmdb.service';
 
 const router = Router();
 
-
-
-
 // GET /api/actors
-router.get('/', async (req, res, next) => {
+router.get('/', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const letter = typeof req.query.letter === 'string' ? req.query.letter : 'a';
     const language = typeof req.query.language === 'string' ? req.query.language : undefined;
@@ -30,7 +27,7 @@ router.get('/', async (req, res, next) => {
 
 
 // GET /api/actors/:id/connections
-router.get('/:id/connections', async (req, res, next) => {
+router.get('/:id/connections', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;
     const connections = await TMDBService.getActorConnections(id);
@@ -42,7 +39,7 @@ router.get('/:id/connections', async (req, res, next) => {
 
 
 // GET /api/actors/:id
-router.get('/:id', async (req, res, next) => {
+router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;
     const [details, credits] = await Promise.all([

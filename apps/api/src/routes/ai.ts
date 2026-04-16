@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 import { TMDBService } from '../services/tmdb.service';
 
 const router = Router();
@@ -10,7 +10,7 @@ const GENRE_NAMES: Record<string, string> = {
 };
 
 // POST /api/ai/search — uses TMDB discover as fallback
-router.post('/search', async (req, res, next) => {
+router.post('/search', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { query } = req.body;
     if (!query) return res.status(400).json({ error: 'query is required' });
@@ -32,7 +32,7 @@ router.post('/search', async (req, res, next) => {
 });
 
 // POST /api/ai/mood
-router.post('/mood', async (req, res, next) => {
+router.post('/mood', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { title, overview } = req.body;
     try {
@@ -48,7 +48,7 @@ router.post('/mood', async (req, res, next) => {
 });
 
 // POST /api/ai/watch-party — PURE MATH, no AI needed
-router.post('/watch-party', async (req, res, next) => {
+router.post('/watch-party', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { profiles } = req.body;
     if (!profiles || profiles.length < 2) {
@@ -91,7 +91,7 @@ router.post('/watch-party', async (req, res, next) => {
 
 
 // POST /api/ai/critics
-router.post('/critics', async (req, res, next) => {
+router.post('/critics', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { title, overview } = req.body;
     if (!title || !overview) return res.status(400).json({ error: 'title and overview are required' });
@@ -105,7 +105,7 @@ router.post('/critics', async (req, res, next) => {
 });
 
 // POST /api/ai/vibe-search
-router.post('/vibe-search', async (req, res, next) => {
+router.post('/vibe-search', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { vibe } = req.body;
     if (!vibe) return res.status(400).json({ error: 'vibe is required' });
@@ -120,7 +120,7 @@ router.post('/vibe-search', async (req, res, next) => {
 });
 
 // POST /api/ai/scene-trivia
-router.post('/scene-trivia', async (req, res, next) => {
+router.post('/scene-trivia', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { movieTitle, sceneDescription } = req.body;
     if (!movieTitle || !sceneDescription) return res.status(400).json({ error: 'movieTitle and sceneDescription are required' });
@@ -134,7 +134,7 @@ router.post('/scene-trivia', async (req, res, next) => {
 });
 
 // GET /api/ai/movie-images/:id
-router.get('/movie-images/:id', async (req, res, next) => {
+router.get('/movie-images/:id', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const images = await TMDBService.getMovieImages(req.params.id);
     res.json(images);

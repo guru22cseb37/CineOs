@@ -1,10 +1,11 @@
-import { Router } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 import { TMDBService } from '../services/tmdb.service';
+import { GroqService } from '../services/groq.service';
 
 const router = Router();
 
 // GET /api/movies/trending
-router.get('/trending', async (req, res, next) => {
+router.get('/trending', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const data = await TMDBService.getTrendingMovies();
     res.json(data);
@@ -14,7 +15,7 @@ router.get('/trending', async (req, res, next) => {
 });
 
 // GET /api/movies/popular
-router.get('/popular', async (req, res, next) => {
+router.get('/popular', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const page = parseInt(req.query.page as string) || 1;
     const data = await TMDBService.getPopularMovies(page);
@@ -25,7 +26,7 @@ router.get('/popular', async (req, res, next) => {
 });
 
 // GET /api/movies/discover
-router.get('/discover', async (req, res, next) => {
+router.get('/discover', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { language, genre, page } = req.query;
     const pageNum = parseInt(page as string) || 1;
@@ -46,7 +47,7 @@ router.get('/discover', async (req, res, next) => {
 });
 
 // GET /api/movies/:id/videos
-router.get('/:id/videos', async (req, res, next) => {
+router.get('/:id/videos', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const data = await TMDBService.getMovieVideos(req.params.id);
     res.json(data);
@@ -57,7 +58,7 @@ router.get('/:id/videos', async (req, res, next) => {
 
 
 // GET /api/movies/:id/dna
-router.get('/:id/dna', async (req, res, next) => {
+router.get('/:id/dna', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;
     const movie = await TMDBService.getMovie(id);
@@ -69,7 +70,7 @@ router.get('/:id/dna', async (req, res, next) => {
 });
 
 // GET /api/movies/:id
-router.get('/:id', async (req, res, next) => {
+router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;
     // Parallel fetch for speed

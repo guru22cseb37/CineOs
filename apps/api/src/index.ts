@@ -31,7 +31,7 @@ async function startServer() {
   redisClient.on('connect', () => console.log('🔴 Connected to Redis'));
   redisClient.on('error', (error) => {
     // Suppress the constant redis error spam if container is down
-    if (error.code === 'ECONNREFUSED') return;
+    if ((error as any).code === 'ECONNREFUSED') return;
     console.warn('⚠️ Redis error:', error.message);
   });
 
