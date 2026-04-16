@@ -133,6 +133,20 @@ router.post('/scene-trivia', async (req: Request, res: Response, next: NextFunct
   }
 });
 
+// POST /api/ai/director-vision
+router.post('/director-vision', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { title, overview } = req.body;
+    if (!title || !overview) return res.status(400).json({ error: 'title and overview are required' });
+
+    const { GroqService } = await import('../services/groq.service');
+    const vision = await GroqService.getDirectorVision(title, overview);
+    res.json(vision);
+  } catch (error) {
+    next(error);
+  }
+});
+
 // GET /api/ai/movie-images/:id
 router.get('/movie-images/:id', async (req: Request, res: Response, next: NextFunction) => {
   try {

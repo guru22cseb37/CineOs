@@ -9,6 +9,7 @@ import MovieRow from '@/components/movie/MovieRow';
 import DynamicAtmosphere from '@/components/theme/DynamicAtmosphere';
 
 import MovieCritics from '@/components/movie/MovieCritics';
+import DirectorVision from '@/components/movie/DirectorVision';
 import CineDNARadar from '@/components/movie/CineDNARadar';
 import SceneExplorer from '@/components/movie/SceneExplorer';
 import TrailerModal from '@/components/movie/TrailerModal';
@@ -106,6 +107,10 @@ export default function MovieDetail({ params }: { params: { id: string } }) {
               <span>{movie.release_date?.substring(0, 4)}</span>
               <span className="w-1 h-1 bg-white/20 rounded-full" />
               <span>{movie.runtime}m</span>
+              <span className="w-1 h-1 bg-white/20 rounded-full" />
+              <span className="text-cinema-gold">21:9 UltraWide</span>
+              <span className="w-1 h-1 bg-white/20 rounded-full" />
+              <span className="text-white/30 font-bold">Kodak 35mm Style</span>
               <div className="flex space-x-2">
                 {movie.genres?.slice(0, 2).map((g: any) => (
                   <span key={g.id} className="border border-white/10 px-3 py-1 rounded-full backdrop-blur-3xl bg-white/5 text-[10px]">{g.name}</span>
@@ -182,6 +187,8 @@ export default function MovieDetail({ params }: { params: { id: string } }) {
             </div>
           </div>
         </div>
+
+        <DirectorVision title={movie.title} overview={movie.overview} />
 
         <SceneExplorer movieId={movie.id} movieTitle={movie.title} />
 

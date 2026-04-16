@@ -56,5 +56,32 @@
   .text-glow {
     text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
   }
+
+  @keyframes mesh-float-1 {
+    0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+    33% { transform: translate(15%, 10%) rotate(120deg) scale(1.1); }
+    66% { transform: translate(-5%, 20%) rotate(240deg) scale(0.9); }
+    100% { transform: translate(0, 0) rotate(360deg) scale(1); }
+  }
+
+  @keyframes mesh-float-2 {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(-20%, -15%) rotate(-180deg) scale(1.2); }
+    100% { transform: translate(0, 0) rotate(-360deg); }
+  }
+
+  @keyframes mesh-float-3 {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(10%, -20%) scale(0.8); }
+    100% { transform: translate(0, 0) scale(1); }
+  }
+
+  .animate-mesh-float-1 { animation: mesh-float-1 30s infinite ease-in-out; }
+  .animate-mesh-float-2 { animation: mesh-float-2 35s infinite ease-in-out; }
+  .animate-mesh-float-3 { animation: mesh-float-3 25s infinite ease-in-out; }
+  
+  .animate-pulse-slow {
+    animation: pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
 }
 

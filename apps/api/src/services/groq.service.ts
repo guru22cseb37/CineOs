@@ -175,6 +175,37 @@ export class GroqService {
     }
   }
 
+  static async getDirectorVision(title: string, overview: string): Promise<{ miseEnScene: string; colorTheory: string; signatureStyle: string }> {
+    const defaultVision = {
+      miseEnScene: "A masterfully arranged visual space that emphasizes character isolation and thematic depth.",
+      colorTheory: "A palette dominated by deep shadows and high-contrast hues that underscore the movie's emotional core.",
+      signatureStyle: "The director's characteristic use of deliberate pacing and atmospheric tension is on full display here."
+    };
+
+    if (!process.env.GROQ_API_KEY) return defaultVision;
+
+    try {
+      const completion = await groq.chat.completions.create({
+        messages: [
+          {
+            role: 'system',
+            content: 'Analyze the "Director\'s Vision" for a movie. Return a JSON object with: "miseEnScene" (visual arrangement), "colorTheory" (pacing/palette), and "signatureStyle" (director\'s unique touch). Keep each 2 sentences. Return ONLY valid JSON.'
+          },
+          { role: 'user', content: `Analyze the craft of: "${title}". Description: ${overview}` }
+        ],
+        model: 'llama3-8b-8192',
+        temperature: 0.6,
+        max_tokens: 512,
+        response_format: { type: 'json_object' }
+      });
+
+      const content = completion.choices[0]?.message?.content || '{}';
+      return JSON.parse(content);
+    } catch (e) {
+      return defaultVision;
+    }
+  }
+
   static async translateVibeToParams(vibe: string): Promise<Record<string, string>> {
     if (!process.env.GROQ_API_KEY) return { sort_by: 'popularity.desc' };
 
