@@ -28,18 +28,7 @@ router.get('/popular', async (req: Request, res: Response, next: NextFunction) =
 // GET /api/movies/discover
 router.get('/discover', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { language, genre, page } = req.query;
-    const pageNum = parseInt(page as string) || 1;
-    
-    let data;
-    if (language) {
-      data = await TMDBService.discoverMoviesByLanguage(language as string, pageNum);
-    } else if (genre) {
-      data = await TMDBService.discoverMoviesByGenre(parseInt(genre as string), pageNum);
-    } else {
-      data = await TMDBService.getPopularMovies(pageNum);
-    }
-    
+    const data = await TMDBService.discoverMovies(req.query as any);
     res.json(data);
   } catch (error) {
     next(error);
