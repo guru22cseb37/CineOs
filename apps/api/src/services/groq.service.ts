@@ -89,65 +89,67 @@ export class GroqService {
 
 
   static async getMovieCritics(title: string, overview: string): Promise<{ scholar: string; hype: string; technical: string }> {
-    if (!process.env.GROQ_API_KEY) return { scholar: '', hype: '', technical: '' };
+    if (!process.env.GROQ_API_KEY) return this.getCriticFallbacks();
 
-    const completion = await groq.chat.completions.create({
-      messages: [
-        {
-          role: 'system',
-          content: 'You are three elite movie critics. Return a JSON object with three keys: "scholar" (deep, analytical, focused on cinematography and subtext), "hype" (enthusiastic, focused on fun, action, and modern vibes), and "technical" (a seasoned Director of Photography focusing on lenses, lighting, framing, and technical mastery). Each review should be 2-3 sentences. Return ONLY valid JSON.'
-        },
-        { role: 'user', content: `Movie: "${title}". Overview: ${overview}` }
-      ],
-      model: 'llama-3.3-70b-versatile',
-      temperature: 0.7,
-      max_tokens: 768,
-      response_format: { type: 'json_object' }
-    });
+    try {
+      const completion = await groq.chat.completions.create({
+        messages: [
+          {
+            role: 'system',
+            content: 'You are three elite movie critics. Return a JSON object with three keys: "scholar" (deep, analytical), "hype" (enthusiastic, modern), and "technical" (cinematography focus). Each review 2 sentences. Return ONLY valid JSON.'
+          },
+          { role: 'user', content: `Movie: "${title}". Overview: ${overview}` }
+        ],
+        model: 'llama3-8b-8192',
+        temperature: 0.7,
+        max_tokens: 512,
+        response_format: { type: 'json_object' }
+      });
 
-    const content = completion.choices[0]?.message?.content || '{}';
-    return JSON.parse(content);
+      const content = completion.choices[0]?.message?.content || '{}';
+      return JSON.parse(content);
+    } catch (e) {
+      console.error('Groq Critics failed, using fallbacks');
+      return this.getCriticFallbacks();
+    }
   }
 
   static async getMovieCineDNA(title: string, overview: string): Promise<{ labels: string[]; values: number[] }> {
-    if (!process.env.GROQ_API_KEY) return { labels: [], values: [] };
+    const defaultDNA = {
+      labels: ['Cinematography', 'Storyweight', 'Adrenaline', 'Heart', 'Complexity'],
+      values: [70, 65, 80, 55, 60]
+    };
 
-    const completion = await groq.chat.completions.create({
-      messages: [
-        {
-          role: 'system',
-          content: 'Analyze the "DNA" of a movie. Return a JSON object with two arrays: "labels" (Cinematography, Storyweight, Adrenaline, Heart, Complexity) and "values" (integers 0-100 representing the Intensity). Be accurate to the film style. Return ONLY valid JSON.'
-        },
-        { role: 'user', content: `Analyze the DNA of: "${title}". Description: ${overview}` }
-      ],
-      model: 'llama-3.3-70b-versatile',
-      temperature: 0.1,
-      max_tokens: 256,
-      response_format: { type: 'json_object' }
-    });
+    if (!process.env.GROQ_API_KEY) return defaultDNA;
 
-    const content = completion.choices[0]?.message?.content || '{}';
-    return JSON.parse(content);
+    try {
+      const completion = await groq.chat.completions.create({
+        messages: [
+          {
+            role: 'system',
+            content: 'Return DNA intensity (0-100) for: Cinematography, Storyweight, Adrenaline, Heart, Complexity. Return ONLY JSON object with "labels" and "values" keys.'
+          },
+          { role: 'user', content: `Movie: "${title}"` }
+        ],
+        model: 'llama3-8b-8192',
+        temperature: 0.1,
+        max_tokens: 128,
+        response_format: { type: 'json_object' }
+      });
+
+      const content = completion.choices[0]?.message?.content || '{}';
+      return JSON.parse(content);
+    } catch (e) {
+      return defaultDNA;
+    }
   }
 
-
-  static async getSceneTrivia(movieTitle: string, sceneDescription: string): Promise<string> {
-    if (!process.env.GROQ_API_KEY) return '';
-
-    const completion = await groq.chat.completions.create({
-      messages: [
-        {
-          role: 'system',
-          content: 'You are a film historian. Provide a single, fascinating "cinephile trivia" fact about a specific scene or aspect of the movie. Keep it under 40 words.'
-        },
-        { role: 'user', content: `Movie: "${movieTitle}". Scene/Aspect: ${sceneDescription}` }
-      ],
-      model: 'llama-3.3-70b-versatile',
-      temperature: 0.8,
-      max_tokens: 100
-    });
-
-    return completion.choices[0]?.message?.content?.trim() || '';
+  private static getCriticFallbacks() {
+    return {
+      scholar: "A profound exploration of cinematic language, weaving subtext into every frame.",
+      hype: "An absolute blast of a ride! The energy and pacing keep you locked in from start to finish.",
+      technical: "The masterfully handled lighting and framing create a truly immersive visual canvas."
+    };
   }
 
   static async translateVibeToParams(vibe: string): Promise<Record<string, string>> {
