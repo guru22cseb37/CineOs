@@ -62,18 +62,13 @@ router.get('/:id/dna', async (req: Request, res: Response, next: NextFunction) =
 router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;
-    // Parallel fetch for speed
-    const [movie, credits, similar, critics, dna] = await Promise.all([
+    // Parallel fetch core data from TMDB
+    const [movie, credits, similar] = await Promise.all([
       TMDBService.getMovie(id),
       TMDBService.getMovieCredits(id),
-      TMDBService.getMovieSimilar(id),
-      GroqService.getMovieCritics(id, id), // Note: We'll fetch these based on the actual title in the component or here
-      GroqService.getMovieCineDNA(id, id)   // Same here
+      TMDBService.getMovieSimilar(id)
     ]);
 
-    // To avoid double analysis, it might be better to fetch them in the frontend or 
-    // fetch the movie first then critics. For now, let's just add the endpoint and
-    // let the frontend handle the specialized calls.
     res.json({ ...movie, credits, similar });
   } catch (error) {
     next(error);
