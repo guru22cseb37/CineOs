@@ -21,7 +21,7 @@ export default function MovieDetail({ params }: { params: { id: string } }) {
   const { data: movie, isLoading } = useQuery({
     queryKey: ['movie', params.id],
     queryFn: async () => {
-      const res = await fetch(`http://localhost:4000/api/movies/${params.id}`);
+      const res = await fetch(`https://cine-os-api.vercel.app/api/movies/${params.id}`);
       if (!res.ok) throw new Error('Failed to fetch movie');
       return res.json();
     }
@@ -30,7 +30,7 @@ export default function MovieDetail({ params }: { params: { id: string } }) {
   const { data: videoData } = useQuery({
     queryKey: ['movie-videos', params.id],
     queryFn: async () => {
-      const res = await fetch(`http://localhost:4000/api/movies/${params.id}/videos`);
+      const res = await fetch(`https://cine-os-api.vercel.app/api/movies/${params.id}/videos`);
       if (!res.ok) return { results: [] };
       return res.json();
     },

@@ -12,7 +12,7 @@ import { Sparkles, Users, Clapperboard, Flame, Star, Globe2, Zap } from 'lucide-
 import { API_BASE } from '@/lib/api';
 
 const fetchMovies = async (path: string) => {
-  const res = await fetch(`${API}/movies/${path}`);
+  const res = await fetch(`${API_BASE}/movies/${path}`);
   if (!res.ok) throw new Error('fetch failed');
   return res.json();
 };

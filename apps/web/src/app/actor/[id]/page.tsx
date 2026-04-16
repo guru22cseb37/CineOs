@@ -10,7 +10,7 @@ export default function ActorProfile({ params }: { params: { id: string } }) {
   const { data: actor, isLoading } = useQuery({
     queryKey: ['actor', params.id],
     queryFn: async () => {
-      const res = await fetch(`http://localhost:4000/api/actors/${params.id}`);
+      const res = await fetch(`https://cine-os-api.vercel.app/api/actors/${params.id}`);
       if (!res.ok) throw new Error('Failed');
       return res.json();
     }
