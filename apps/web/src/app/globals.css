@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --cineos-primary: #d4af37;
+  --cineos-glow: #d4af3740;
+  --cineos-bg: #080808;
+}
+
+@layer base {
+  body {
+    @apply bg-cinema-void text-white antialiased selection:bg-cinema-gold selection:text-cinema-void overflow-x-hidden;
+    background-color: var(--cineos-bg);
+    transition: background-color 1.5s ease;
+  }
+}
+
+@layer utilities {
+  .glassmorphism {
+    @apply bg-cinema-glass backdrop-blur-md border border-white/10;
+  }
+  
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
