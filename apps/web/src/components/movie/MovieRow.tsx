@@ -6,6 +6,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface MovieRowProps {
   title: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   movies: any[];
   icon?: React.ReactNode;
 }
