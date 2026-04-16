@@ -42,14 +42,14 @@ export default function Home() {
   const { data: popular } = useQuery({ queryKey: ['popular'], queryFn: () => fetchMovies('popular') });
   const { data: topRated } = useQuery({ queryKey: ['topRated'], queryFn: () => fetchMovies('discover?sort_by=vote_average.desc&vote_count.gte=1000') });
   const { data: action } = useQuery({ queryKey: ['action'], queryFn: () => fetchMovies('discover?with_genres=28&sort_by=popularity.desc') });
-  const { data: korean } = useQuery({ queryKey: ['korean'], queryFn: () => fetchMovies('discover?language=ko&sort_by=popularity.desc') });
-  const { data: hindi } = useQuery({ queryKey: ['hindi'], queryFn: () => fetchMovies('discover?language=hi&sort_by=popularity.desc') });
-  const { data: tamil } = useQuery({ queryKey: ['tamil'], queryFn: () => fetchMovies('discover?language=ta') });
-  const { data: malayalam } = useQuery({ queryKey: ['malayalam'], queryFn: () => fetchMovies('discover?language=ml') });
+  const { data: korean } = useQuery({ queryKey: ['korean'], queryFn: () => fetchMovies('discover?with_original_language=ko&sort_by=popularity.desc') });
+  const { data: hindi } = useQuery({ queryKey: ['hindi'], queryFn: () => fetchMovies('discover?with_original_language=hi&sort_by=popularity.desc') });
+  const { data: tamil } = useQuery({ queryKey: ['tamil'], queryFn: () => fetchMovies('discover?with_original_language=ta') });
+  const { data: malayalam } = useQuery({ queryKey: ['malayalam'], queryFn: () => fetchMovies('discover?with_original_language=ml') });
   const { data: scifi } = useQuery({ queryKey: ['scifi'], queryFn: () => fetchMovies('discover?with_genres=878&sort_by=popularity.desc') });
   const { data: horror } = useQuery({ queryKey: ['horror'], queryFn: () => fetchMovies('discover?with_genres=27&sort_by=popularity.desc') });
   const { data: animation } = useQuery({ queryKey: ['animation'], queryFn: () => fetchMovies('discover?with_genres=16&sort_by=vote_average.desc&vote_count.gte=500') });
-  const { data: japanese } = useQuery({ queryKey: ['japanese'], queryFn: () => fetchMovies('discover?language=ja&sort_by=popularity.desc') });
+  const { data: japanese } = useQuery({ queryKey: ['japanese'], queryFn: () => fetchMovies('discover?with_original_language=ja&sort_by=popularity.desc') });
 
   const heroMovie = trending?.results?.[2] || trending?.results?.[0] || null;
 
