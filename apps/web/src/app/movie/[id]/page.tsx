@@ -2,7 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-import { Play, Plus, BookOpen, Calendar, Star, Ghost } from 'lucide-react';
+import { Play, Plus } from 'lucide-react';
 
 
 import MovieRow from '@/components/movie/MovieRow';

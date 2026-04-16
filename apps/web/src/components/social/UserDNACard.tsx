@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { Sparkles, Share2, Download, Zap } from 'lucide-react';
 import { API_BASE } from '@/lib/api';

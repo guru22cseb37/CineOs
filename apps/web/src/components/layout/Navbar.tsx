@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { User, Menu, Clapperboard } from 'lucide-react';
+import { User, Menu } from 'lucide-react';
 import AISearchModal from '@/components/ai/AISearchModal';
 
 export default function Navbar() {

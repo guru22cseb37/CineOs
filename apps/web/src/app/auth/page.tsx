@@ -42,7 +42,7 @@ export default function AuthPage() {
         localStorage.setItem('cineos_user', JSON.stringify(data.user));
         setMessage(mode === 'login' ? `Welcome back, ${data.user.name || data.user.email}!` : 'Account created! Welcome to CineOS!');
       }
-    } catch (err) {
+    } catch {
       setError('Network error. Please try again.');
     } finally {
       setLoading(false);

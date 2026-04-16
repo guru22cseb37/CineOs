@@ -1,9 +1,9 @@
 'use client';
 
 import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion';
-import { Play, Info, Star, Clock, ChevronRight } from 'lucide-react';
+import { Play, Info, Star } from 'lucide-react';
 import Link from 'next/link';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import TrailerModal from './TrailerModal';
 
 interface HeroBannerProps {
@@ -19,7 +19,6 @@ const GENRE_MAP: Record<number, string> = {
 };
 
 export default function HeroBanner({ movie }: HeroBannerProps) {
-  const [imageLoaded, setImageLoaded] = useState(false);
   const [isTrailerOpen, setIsTrailerOpen] = useState(false);
   const [trailerKey, setTrailerKey] = useState('');
   
@@ -121,7 +120,6 @@ export default function HeroBanner({ movie }: HeroBannerProps) {
           src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
           alt={movie.title}
           className="w-full h-full object-cover filter brightness-[0.7] contrast-[1.1]"
-          onLoad={() => setImageLoaded(true)}
         />
         {/* Deep Gradient Masks */}
         <div className="absolute inset-0 bg-gradient-to-t from-cinema-void via-cinema-void/60 to-transparent" />
