@@ -66,11 +66,11 @@ export default function AISearchModal() {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-sm text-cinema-muted hover:border-cinema-gold/50 hover:text-cinema-gold transition-all"
+        className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-lg px-2 py-1.5 md:px-3 text-sm text-cinema-muted hover:border-cinema-gold/50 hover:text-cinema-gold transition-all"
       >
         <Sparkles className="w-4 h-4 text-cinema-gold" />
-        <span>AI Search</span>
-        <kbd className="text-xs bg-white/10 px-1.5 py-0.5 rounded text-cinema-muted">⌘K</kbd>
+        <span className="hidden sm:inline">AI Search</span>
+        <kbd className="hidden md:inline text-xs bg-white/10 px-1.5 py-0.5 rounded text-cinema-muted">⌘K</kbd>
       </button>
 
       <AnimatePresence>
