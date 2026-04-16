@@ -45,6 +45,18 @@ router.get('/:id/videos', async (req: Request, res: Response, next: NextFunction
   }
 });
 
+// GET /api/movies/:id/providers
+router.get('/:id/providers', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const data = await TMDBService.getMovieWatchProviders(req.params.id);
+    // Filter for India (IN) specifically for the quick win
+    const providers = data.results?.IN || data.results?.US || {};
+    res.json(providers);
+  } catch (error) {
+    next(error);
+  }
+});
+
 
 // GET /api/movies/:id/dna
 // Accepts optional body { title, overview } to speed up and reduce TMDB calls

@@ -147,11 +147,15 @@ router.post('/director-vision', async (req: Request, res: Response, next: NextFu
   }
 });
 
-// GET /api/ai/movie-images/:id
-router.get('/movie-images/:id', async (req: Request, res: Response, next: NextFunction) => {
+// POST /api/ai/mood-to-scene
+router.post('/mood-to-scene', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const images = await TMDBService.getMovieImages(req.params.id);
-    res.json(images);
+    const { title, mood } = req.body;
+    if (!title || !mood) return res.status(400).json({ error: 'title and mood are required' });
+
+    const { GroqService } = await import('../services/groq.service');
+    const scenes = await GroqService.getMoodToScene(title, mood);
+    res.json(scenes);
   } catch (error) {
     next(error);
   }

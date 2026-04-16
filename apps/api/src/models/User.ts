@@ -17,6 +17,20 @@ export interface IUser extends Document {
     rating: number;
     addedAt: Date;
   }>;
+  watchHistory: Array<{
+    movieId: number;
+    watchedAt: Date;
+    rating?: number;
+  }>;
+  journal: Array<{
+    movieId: number;
+    movieTitle: string;
+    entry: string;
+    vibe: string;
+    createdAt: Date;
+  }>;
+  friends: mongoose.Types.ObjectId[];
+  friendRequests: mongoose.Types.ObjectId[];
 }
 
 const UserSchema = new Schema<IUser>({
@@ -37,7 +51,25 @@ const UserSchema = new Schema<IUser>({
       rating: { type: Number },
       addedAt: { type: Date, default: Date.now }
     }
-  ]
+  ],
+  watchHistory: [
+    {
+      movieId: { type: Number, required: true },
+      watchedAt: { type: Date, default: Date.now },
+      rating: { type: Number }
+    }
+  ],
+  journal: [
+    {
+      movieId: { type: Number, required: true },
+      movieTitle: { type: String, required: true },
+      entry: { type: String, required: true },
+      vibe: { type: String },
+      createdAt: { type: Date, default: Date.now }
+    }
+  ],
+  friends: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+  friendRequests: [{ type: Schema.Types.ObjectId, ref: 'User' }]
 }, { timestamps: true });
 
 export const User = mongoose.model<IUser>('User', UserSchema);

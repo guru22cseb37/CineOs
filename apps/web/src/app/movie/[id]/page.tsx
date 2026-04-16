@@ -10,19 +10,24 @@ import DynamicAtmosphere from '@/components/theme/DynamicAtmosphere';
 
 import MovieCritics from '@/components/movie/MovieCritics';
 import DirectorVision from '@/components/movie/DirectorVision';
-import CineDNARadar from '@/components/movie/CineDNARadar';
 import SceneExplorer from '@/components/movie/SceneExplorer';
 import TrailerModal from '@/components/movie/TrailerModal';
+import JournalModal from '@/components/movie/JournalModal';
+import MoodToScene from '@/components/movie/MoodToScene';
 import { useState } from 'react';
+import { Check } from 'lucide-react';
+import { API_BASE } from '@/lib/api';
 
 export default function MovieDetail({ params }: { params: { id: string } }) {
   const [isTrailerOpen, setIsTrailerOpen] = useState(false);
+  const [isJournalOpen, setIsJournalOpen] = useState(false);
   const [selectedVideoKey, setSelectedVideoKey] = useState('');
+  const [isWatched, setIsWatched] = useState(false);
 
   const { data: movie, isLoading } = useQuery({
     queryKey: ['movie', params.id],
     queryFn: async () => {
-      const res = await fetch(`https://cine-os-api.vercel.app/api/movies/${params.id}`);
+      const res = await fetch(`${API_BASE}/movies/${params.id}`);
       if (!res.ok) throw new Error('Failed to fetch movie');
       return res.json();
     }
@@ -31,8 +36,18 @@ export default function MovieDetail({ params }: { params: { id: string } }) {
   const { data: videoData } = useQuery({
     queryKey: ['movie-videos', params.id],
     queryFn: async () => {
-      const res = await fetch(`https://cine-os-api.vercel.app/api/movies/${params.id}/videos`);
+      const res = await fetch(`${API_BASE}/movies/${params.id}/videos`);
       if (!res.ok) return { results: [] };
+      return res.json();
+    },
+    enabled: !!movie
+  });
+
+  const { data: providers } = useQuery({
+    queryKey: ['movie-providers', params.id],
+    queryFn: async () => {
+      const res = await fetch(`${API_BASE}/movies/${params.id}/providers`);
+      if (!res.ok) return null;
       return res.json();
     },
     enabled: !!movie
@@ -65,6 +80,41 @@ export default function MovieDetail({ params }: { params: { id: string } }) {
     }
   };
 
+  const handleToggleWatched = async () => {
+    setIsWatched(true);
+    setIsJournalOpen(true);
+    
+    // Add to history in background
+    try {
+      await fetch(`${API_BASE}/users/history`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ movieId: movie.id, rating: 8 }) // Default rating
+      });
+    } catch (e) {
+      console.warn('History sync failed');
+    }
+  };
+
+  const handleJournalSubmit = async (entry: string, vibe: string) => {
+    try {
+      await fetch(`${API_BASE}/users/journal`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          movieId: movie.id, 
+          movieTitle: movie.title, 
+          entry, 
+          vibe 
+        })
+      });
+    } catch (e) {
+      console.error('Journal sync failed');
+    }
+  };
+
+  const watchOptions = providers?.flatrate || providers?.rent || providers?.buy || [];
+
   return (
     <div className="pb-20">
       <DynamicAtmosphere imagePath={movie.backdrop_path} />
@@ -73,6 +123,13 @@ export default function MovieDetail({ params }: { params: { id: string } }) {
         isOpen={isTrailerOpen} 
         onClose={() => setIsTrailerOpen(false)} 
         videoKey={selectedVideoKey} 
+      />
+
+      <JournalModal
+        isOpen={isJournalOpen}
+        onClose={() => setIsJournalOpen(false)}
+        onSubmit={handleJournalSubmit}
+        movieTitle={movie.title}
       />
 
       <div className="relative h-[80vh] w-full">
@@ -117,6 +174,32 @@ export default function MovieDetail({ params }: { params: { id: string } }) {
                 ))}
               </div>
             </div>
+            
+            {/* Watch Providers Snippet */}
+            {watchOptions.length > 0 && (
+              <div className="flex items-center space-x-4 mb-6">
+                <span className="text-[10px] font-black text-cinema-gold uppercase tracking-widest">Available On:</span>
+                <div className="flex -space-x-2">
+                  {watchOptions.slice(0, 4).map((provider: any) => (
+                    <motion.div 
+                      key={provider.provider_id}
+                      whileHover={{ scale: 1.2, zIndex: 20 }}
+                      className="w-8 h-8 rounded-lg overflow-hidden border-2 border-cinema-void bg-white relative group cursor-pointer"
+                      title={provider.provider_name}
+                      onClick={() => window.open(providers?.link, '_blank')}
+                    >
+                      <img src={`https://image.tmdb.org/t/p/original${provider.logo_path}`} alt={provider.provider_name} className="w-full h-full object-cover" />
+                    </motion.div>
+                  ))}
+                  {watchOptions.length > 4 && (
+                    <div className="w-8 h-8 rounded-lg bg-cinema-glass border-2 border-cinema-void flex items-center justify-center text-[8px] font-bold text-white">
+                      +{watchOptions.length - 4}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
             <motion.p 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -135,10 +218,20 @@ export default function MovieDetail({ params }: { params: { id: string } }) {
                 <Play className="w-6 h-6 fill-current group-hover:scale-110 transition-transform" />
                 <span>Experience</span>
               </motion.button>
-              <button className="flex items-center space-x-3 bg-white/5 backdrop-blur-3xl border border-white/10 text-white px-10 py-4 rounded-2xl font-black text-lg hover:bg-white/10 transition-all">
-                <Plus className="w-6 h-6" />
-                <span>Watchlist</span>
-              </button>
+              
+              <motion.button 
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={handleToggleWatched}
+                className={`flex items-center space-x-3 px-10 py-4 rounded-2xl font-black text-lg transition-all ${
+                  isWatched 
+                    ? 'bg-cinema-jade text-black' 
+                    : 'bg-white/5 backdrop-blur-3xl border border-white/10 text-white hover:bg-white/10'
+                }`}
+              >
+                {isWatched ? <Check className="w-6 h-6" /> : <Plus className="w-6 h-6" />}
+                <span>{isWatched ? 'Watched' : 'Watchlist'}</span>
+              </motion.button>
             </div>
           </div>
         </div>
@@ -189,6 +282,8 @@ export default function MovieDetail({ params }: { params: { id: string } }) {
         </div>
 
         <DirectorVision title={movie.title} overview={movie.overview} />
+
+        <MoodToScene movieTitle={movie.title} />
 
         <SceneExplorer movieId={movie.id} movieTitle={movie.title} />
 

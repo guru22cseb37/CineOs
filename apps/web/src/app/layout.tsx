@@ -26,8 +26,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
+    <html lang="en" className="dark scroll-smooth">
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#050505" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+      </head>
+      <body className={`${inter.className} bg-cinema-void text-white selection:bg-cinema-primary selection:text-black`}>
         <QueryProvider>
           {/* Reads localStorage calibration, applies CSS theme variables */}
           <DynamicThemeApplier />

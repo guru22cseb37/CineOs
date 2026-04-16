@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Camera, Info } from 'lucide-react';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { API_BASE } from '@/lib/api';
 
 interface SceneExplorerProps {
   movieId: string;
@@ -18,7 +19,7 @@ export default function SceneExplorer({ movieId, movieTitle }: SceneExplorerProp
   const { data: imageData } = useQuery({
     queryKey: ['movie-images', movieId],
     queryFn: async () => {
-      const res = await fetch(`https://cine-os-api.vercel.app/api/ai/movie-images/${movieId}`);
+      const res = await fetch(`${API_BASE}/ai/movie-images/${movieId}`);
       if (!res.ok) throw new Error('Failed to fetch images');
       return res.json();
     }
@@ -29,7 +30,7 @@ export default function SceneExplorer({ movieId, movieTitle }: SceneExplorerProp
     setTrivia('');
     setIsTriviaLoading(true);
     try {
-      const res = await fetch('https://cine-os-api.vercel.app/api/ai/scene-trivia', {
+      const res = await fetch(`${API_BASE}/ai/scene-trivia`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 

@@ -230,5 +230,60 @@ export class GroqService {
       return { sort_by: 'popularity.desc' };
     }
   }
+
+  static async generateJournalEntry(title: string, rating: number, mood: string): Promise<string> {
+    if (!process.env.GROQ_API_KEY) return "I just watched this and it was an interesting experience.";
+
+    try {
+      const completion = await groq.chat.completions.create({
+        messages: [
+          {
+            role: 'system',
+            content: 'You are a professional film journal assistant. Help the user write a reflective, 2-sentence journal entry for their movie diary. Use an evocative and personal tone.'
+          },
+          { role: 'user', content: `Movie: ${title}. My Rating: ${rating}/10. My mood: ${mood}` }
+        ],
+        model: 'llama3-8b-8192',
+        temperature: 0.8,
+        max_tokens: 150
+      });
+
+      return completion.choices[0]?.message?.content?.trim() || "A memorable watch that stayed with me long after the credits rolled.";
+    } catch (e) {
+      return "An evocative cinematic journey that challenged my perspective.";
+    }
+  }
+
+  static async getMoodToScene(title: string, mood: string): Promise<{ scenes: Array<{ time: string; description: string; vibe: string }> }> {
+    const defaultScenes = {
+      scenes: [
+        { time: "[00:15:20]", description: "The establishing shot of the protagonist's descent.", vibe: "Haunting" },
+        { time: "[00:48:10]", description: "The high-contrast transition scene.", vibe: "Intense" }
+      ]
+    };
+
+    if (!process.env.GROQ_API_KEY) return defaultScenes;
+
+    try {
+      const completion = await groq.chat.completions.create({
+        messages: [
+          {
+            role: 'system',
+            content: 'You are a film scholar. Given a movie title and a user mood, return a JSON object with a "scenes" array. Each scene should have: "time" (approximate timestamp like [00:42:15]), "description" (what happens), and "vibe" (how it matches the mood). Return ONLY valid JSON.'
+          },
+          { role: 'user', content: `Movie: ${title}. Mood: ${mood}` }
+        ],
+        model: 'llama3-8b-8192',
+        temperature: 0.6,
+        max_tokens: 512,
+        response_format: { type: 'json_object' }
+      });
+
+      const content = completion.choices[0]?.message?.content || '{}';
+      return JSON.parse(content);
+    } catch (e) {
+      return defaultScenes;
+    }
+  }
 }
 

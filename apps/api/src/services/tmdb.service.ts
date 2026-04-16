@@ -120,6 +120,10 @@ export class TMDBService {
     return this.fetchFromTMDB<any>({ endpoint: `/movie/${id}/images` });
   }
 
+  static async getMovieWatchProviders(id: string) {
+    return this.fetchFromTMDB<any>({ endpoint: `/movie/${id}/watch/providers` });
+  }
+
 
   static async getActorsByLanguage(language: string, page = 1) {
     // Mapping languages to regions for better filtering
