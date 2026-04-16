@@ -1,0 +1,36 @@
+services:
+  # 1. API Service (Express)
+  - type: web
+    name: cineos-api
+    runtime: node
+    buildCommand: npm install && npx turbo run build --filter=cineos-api...
+    startCommand: node apps/api/dist/index.js
+    envVars:
+      - key: PORT
+        value: 4000
+      - key: MONGODB_URI
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: TMDB_API_KEY
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: NODE_ENV
+        value: production
+
+  # 2. Web Service (Next.js)
+  - type: web
+    name: cineos-web
+    runtime: node
+    buildCommand: npm install && npx turbo run build --filter=web...
+    startCommand: npm run start --filter=web
+    envVars:
+      - key: NEXT_PUBLIC_API_URL
+        value: https://cineos-api.onrender.com/api
+      - key: TMDB_API_KEY
+        sync: false
+      - key: NODE_ENV
+        value: production
