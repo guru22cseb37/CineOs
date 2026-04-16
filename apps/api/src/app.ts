@@ -13,6 +13,15 @@ app.use(express.json());
 app.use(morgan('dev'));
 
 // Routes
+app.get('/', (req, res) => {
+  res.json({ 
+    message: '🎬 CineOS API Master Edition is Running',
+    status: 'online',
+    version: '1.0.0',
+    endpoints: ['/api/movies', '/api/actors', '/api/ai']
+  });
+});
+
 app.use('/api', routes);
 
 // Health check
