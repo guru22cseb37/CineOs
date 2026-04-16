@@ -13,7 +13,7 @@ const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/cineos
 const REDIS_URL = process.env.REDIS_URL || 'redis://localhost:6379';
 
 const server = createServer(app);
-const _io = new Server(server, {
+new Server(server, {
   cors: {
     origin: process.env.FRONTEND_URL || '*',
   }

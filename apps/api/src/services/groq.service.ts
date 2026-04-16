@@ -114,7 +114,7 @@ export class GroqService {
     }
   }
 
-  static async getMovieCineDNA(title: string, overview: string): Promise<{ labels: string[]; values: number[] }> {
+  static async getMovieCineDNA(title: string, _overview: string): Promise<{ labels: string[]; values: number[] }> {
     const defaultDNA = {
       labels: ['Cinematography', 'Storyweight', 'Adrenaline', 'Heart', 'Complexity'],
       values: [70, 65, 80, 55, 60]
