@@ -33,7 +33,6 @@ export default function Navbar() {
           <nav className="hidden md:flex items-center space-x-6">
             <Link href="/" className="text-sm font-medium hover:text-cinema-gold transition-colors">Home</Link>
             <Link href="/movies" className="text-sm font-medium text-cinema-muted hover:text-white transition-colors">Movies</Link>
-            <Link href="/search" className="text-sm font-medium text-cinema-muted hover:text-cinema-gold transition-colors">AI Search</Link>
             <Link href="/actors" className="text-sm font-medium text-cinema-muted hover:text-white transition-colors">Actors</Link>
             <Link href="/party" className="text-sm font-medium text-cinema-muted hover:text-cinema-jade transition-colors">👥 Watch Party</Link>
             <Link href="/onboarding" className="text-sm font-medium text-cinema-muted hover:text-cinema-gold transition-colors">Calibrate</Link>

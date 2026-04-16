@@ -180,16 +180,21 @@ export default function HeroBanner({ movie }: HeroBannerProps) {
                 <div className="w-5 h-5 md:w-6 md:h-6 rounded-full bg-cinema-void flex items-center justify-center group-hover:bg-cinema-gold transition-colors">
                   <Play className="w-2.5 h-2.5 md:w-3 md:h-3 fill-current text-cinema-gold group-hover:text-cinema-void" />
                 </div>
-                {trailerKey ? 'Experience' : 'YouTube'}
+                {trailerKey ? (
+                  <>
+                    <span className="hidden sm:inline">Experience Trailer</span>
+                    <span className="sm:hidden">Experience</span>
+                  </>
+                ) : 'YouTube'}
               </motion.button>
               
               <Link href={`/movie/${movie.id}`}>
                 <motion.button
-                  whileHover={{ scale: 1.05, y: -2, backgroundColor: 'rgba(255,255,255,0.15)' }}
+                  whileHover={{ scale: 1.05, y: -2, backgroundColor: 'rgba(255,255,255,0.2)' }}
                   whileTap={{ scale: 0.98 }}
-                  className="flex items-center gap-2 md:gap-3 bg-white/5 backdrop-blur-2xl border border-white/10 text-white px-6 py-3.5 md:px-10 md:py-4.5 rounded-2xl font-black text-base md:text-lg transition-all"
+                  className="flex items-center gap-2 md:gap-3 bg-white/10 backdrop-blur-2xl border border-white/20 text-white px-6 py-3.5 md:px-10 md:py-4.5 rounded-2xl font-black text-base md:text-lg transition-all"
                 >
-                  <Info className="w-4 h-4 md:w-5 md:h-5" />
+                  <Info className="w-4 h-4 md:w-5 md:h-5 text-cinema-gold" />
                   Details
                 </motion.button>
               </Link>
